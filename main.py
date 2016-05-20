@@ -22,30 +22,66 @@ front="""
 		Rak1, SI and ATC must watch this and bring out something to crack new jokes.  :(
 	-->
 
-	<div>
-	<b>
-	<h1>Welcome to Word encryptor !</h1>
-	</div>
+<div>
+  <b>
+  <h1>Welcome to Word encryptor !</h1>
+</div>
 
-	<form method="post">
-		<!--
-		<input type="text" name='text' value="%(text)s" style="height: 100px; width: 400px;"> -->
+<form method="post">
+  <select name="ROT">
+    <option value="13">13 Rotation</option>
+    <option value="2">2 Rotation</option>
+    <option value="15">15 Rotation</option>
+  </select>
 
-<textarea name="text" 
-                style="height: 100px; width: 400px;">%(text)s</textarea>
-		<br><br>
-		<input type="submit" >
+  <br>
+  <br>
+<div style="color: red">
+<b>
+%(error)s
+</div>
 
-	</form>
+  <br>
+  <input type="submit">
+
+
+
+</form>
+
 
 """
 
-def encrypt(s):
+rot13="""
+
+<div>
+  <b>
+  <h1>Rotation 13</h1>
+</div>
+
+
+<form method="post">
+
+
+<form method="post">
+  <!--
+  <input type="text" name='text' value="%(text)s" style="height: 100px; width: 400px;"> -->
+
+<textarea name="text" 
+              style="height: 100px; width: 400px;">%(text)s</textarea>
+  <br><br>
+  <input type="submit" name="submit">
+
+</form>
+
+
+"""
+
+def encrypt(s,val):
   s=s.lower();
   s=list(s);
   for i in range(len(s)):
     if (s[i].isalpha()==True):
-      s[i]=chr( ( (ord(s[i])-97)+13)%26+97 );
+      s[i]=chr( ( (ord(s[i])-97)+val)%26+97 );
 
   #x=chr(ord(s[0])-32);
   #s[0]=x;
@@ -62,12 +98,27 @@ def escape_html(s):
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-    self.response.out.write(front%{"text":"Enter your text here..." } )
+    self.response.out.write(front%{"error":""} )
   def post(self):
-  	text=self.request.get('text')
-  	self.response.out.write(front%{"text":encrypt(text) } )
+    ROT=self.request.get('ROT')
+#    self.response.out.write(ROT)
+
+    if(ROT=="13"):
+      self.redirect('/rot13')
+    else:
+      self.response.out.write(front%{"error":"That page is under construction.Please try another option !"} )
+
+class ROT13(webapp2.RequestHandler):
+  def get(self):
+    self.response.out.write(rot13%{"text":"Enter your text here..." } )
+  def post(self):
+    text=self.request.get('text')
+ #   if(reset=="Home"):
+#    self.redirect('/')    
+#    else
+    self.response.out.write(rot13%{"text":escape_html( encrypt(text,13) ) } )
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),('/rot13',ROT13)
 ], debug=True)
 
