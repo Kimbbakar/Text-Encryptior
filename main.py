@@ -17,6 +17,11 @@
 import webapp2
 
 front="""
+	<!--
+		Want to add some emotional text here . But I can't.
+		Rak1, SI and ATC must watch this and bring out something to crack new jokes.  :(
+	-->
+
 	<div>
 	<b>
 	<h1>Welcome to Word encryptor !</h1>
