@@ -22,15 +22,17 @@ front="""
 	<h1>Welcome to Word encryptor !</h1>
 	</div>
 
-	<form methom="post">
+	<form method="post">
 		<h3>Post your text here </h3>
-		<input type="text" name="text" value="%(text)s">
+		<input type="text" name='text' value="%(text)s" size="100">
+		<br><br>
+		<input type="submit" >
 
 	</form>
 
 """
 
-def enprypt(self,s):
+def encrypt(s):
   s=s.lower();
   s=list(s);
   for i in range(len(s)):
@@ -54,10 +56,11 @@ class MainHandler(webapp2.RequestHandler):
   def get(self):
     self.response.out.write(front%{"text":"" } )
   def post(self):
-  	text=self.requst.get('text')
-  	self.response.out.write(text)
-#    self.response.out.write(front%{"text":(text ) } )
+  	text=self.request.get('text')
+  	#self.response.out.write(encrypt(text)) 
+  	self.response.out.write(front%{"text":encrypt(text) } )
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
 ], debug=True)
+
