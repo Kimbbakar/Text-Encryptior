@@ -58,10 +58,9 @@ def escape_html(s):
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-    self.response.out.write(front%{"text":"" } )
+    self.response.out.write(front%{"text":"Enter your text here..." } )
   def post(self):
   	text=self.request.get('text')
-  	self.response.out.write(encrypt(text)) 
   	self.response.out.write(front%{"text":encrypt(text) } )
 
 app = webapp2.WSGIApplication([
