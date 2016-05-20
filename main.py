@@ -24,7 +24,11 @@ front="""
 
 	<form method="post">
 		<h3>Post your text here </h3>
-		<input type="text" name='text' value="%(text)s" size="100">
+		<!--
+		<input type="text" name='text' value="%(text)s" style="height: 100px; width: 400px;"> -->
+
+<textarea name="text" 
+                style="height: 100px; width: 400px;">%(text)s</textarea>
 		<br><br>
 		<input type="submit" >
 
@@ -39,8 +43,8 @@ def encrypt(s):
     if (s[i].isalpha()==True):
       s[i]=chr( ( (ord(s[i])-97)+13)%26+97 );
 
-  x=chr(ord(s[0])-32);
-  s[0]=x;
+  #x=chr(ord(s[0])-32);
+  #s[0]=x;
   s="".join(s)
   return s
 
@@ -57,7 +61,7 @@ class MainHandler(webapp2.RequestHandler):
     self.response.out.write(front%{"text":"" } )
   def post(self):
   	text=self.request.get('text')
-  	#self.response.out.write(encrypt(text)) 
+  	self.response.out.write(encrypt(text)) 
   	self.response.out.write(front%{"text":encrypt(text) } )
 
 app = webapp2.WSGIApplication([
