@@ -23,7 +23,6 @@ front="""
 	</div>
 
 	<form method="post">
-		<h3>Post your text here </h3>
 		<!--
 		<input type="text" name='text' value="%(text)s" style="height: 100px; width: 400px;"> -->
 
