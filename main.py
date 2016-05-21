@@ -29,8 +29,8 @@ front="""
 
 <form method="post">
   <select name="ROT">
-    <option value="13">13 Rotation</option>
     <option value="2">2 Rotation</option>
+    <option value="13">13 Rotation</option>
     <option value="15">15 Rotation</option>
   </select>
 
@@ -51,11 +51,11 @@ front="""
 
 """
 
-rot13="""
+rot="""
 
 <div>
   <b>
-  <h1>Rotation 13</h1>
+  <h1>Rotation %(rotation)s</h1>
 </div>
 
 
@@ -105,20 +105,26 @@ class MainHandler(webapp2.RequestHandler):
 
     if(ROT=="13"):
       self.redirect('/rot13')
+    if(ROT=="2"):
+      self.redirect('/rot2')
     else:
       self.response.out.write(front%{"error":"That page is under construction.Please try another option !"} )
 
 class ROT13(webapp2.RequestHandler):
   def get(self):
-    self.response.out.write(rot13%{"text":"Enter your text here..." } )
+    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13" } )
   def post(self):
     text=self.request.get('text')
- #   if(reset=="Home"):
-#    self.redirect('/')    
-#    else
-    self.response.out.write(rot13%{"text":escape_html( encrypt(text,13) ) } )
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,13) ),"rotation":"13" } )
+
+class ROT2(webapp2.RequestHandler):
+  def get(self):
+    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"2" } )
+  def post(self):
+    text=self.request.get('text')
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,2) ),"rotation":"2" } )
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),('/rot13',ROT13)
+    ('/', MainHandler),('/rot13',ROT13),('/rot2',ROT2)
 ], debug=True)
 
