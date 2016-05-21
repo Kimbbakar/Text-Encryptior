@@ -123,8 +123,6 @@ class ROT2(webapp2.RequestHandler):
     self.response.out.write(rot%{"text":"Enter your text here...","rotation":"2" } )
   def post(self):
     text=self.request.get('text')
-    reset=self.request.get('reset')
-    self.response.out.write(reset)
     self.response.out.write(rot%{"text":escape_html( encrypt(text,2) ),"rotation":"2" } )
 
 app = webapp2.WSGIApplication([
