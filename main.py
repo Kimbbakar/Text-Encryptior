@@ -42,7 +42,7 @@ front="""
 </div>
 
   <br>
-  <input type="submit">
+  <button type="submit" > Submit </button>
 
 
 
@@ -69,10 +69,12 @@ rot="""
 <textarea name="text" 
               style="height: 100px; width: 400px;">%(text)s</textarea>
   <br><br>
-  <input type="submit" name="submit">
-
+  <button type="submit" value="Submit" >Submit </button>  
 </form>
 
+<form action="./" >
+    <input type="submit" name="Home" value="Home">
+</form>
 
 """
 
@@ -101,7 +103,6 @@ class MainHandler(webapp2.RequestHandler):
     self.response.out.write(front%{"error":""} )
   def post(self):
     ROT=self.request.get('ROT')
-#    self.response.out.write(ROT)
 
     if(ROT=="13"):
       self.redirect('/rot13')
@@ -122,6 +123,8 @@ class ROT2(webapp2.RequestHandler):
     self.response.out.write(rot%{"text":"Enter your text here...","rotation":"2" } )
   def post(self):
     text=self.request.get('text')
+    reset=self.request.get('reset')
+    self.response.out.write(reset)
     self.response.out.write(rot%{"text":escape_html( encrypt(text,2) ),"rotation":"2" } )
 
 app = webapp2.WSGIApplication([
