@@ -29,9 +29,9 @@ front="""
 
 <form method="post">
   <select name="ROT">
-    <option value="13">13 Rotation</option>
-    <option value="13 forward backward">13 forward backward Rotation</option>
-    <option value="13 backward forward">13 forward backward Rotation</option>
+    <option value="0">13 Rotation in every step</option>
+    <option value="1">13 Rotation after 1 step(s)</option>
+    <option value="2">13 Rotation after 2 step(s)</option>
   </select>
 
   <br>
@@ -78,13 +78,13 @@ rot="""
 
 """
 
-def encrypt(s,type):
+def encrypt(s,st):
   s=s.lower();
   s=list(s);
   for i in range(len(s)):
-    if (s[i].isalpha()==True):
-      if(type==0):
+    if (s[i].isalpha()==True and (st==0 or (i%1)%st==0) ) :
         s[i]=chr( ( (ord(s[i])-97)+13+26)%26+97 );
+
 
   #x=chr(ord(s[0])-32);
   #s[0]=x;
@@ -105,29 +105,29 @@ class MainHandler(webapp2.RequestHandler):
   def post(self):
     ROT=self.request.get('ROT')
 
-    if(ROT=="13"):
+    if(ROT=="0"):
       self.redirect('/rot13')
-    elif(ROT=="13 forward backward"):
-      self.redirect('/rot13FB')
+    elif(ROT=="1"):
+      self.redirect('/rot13_1')
 #    else:
 
 #      self.response.out.write(front%{"error":"That page is under construction.Please try another option !"} )
 
-class ROT13(webapp2.RequestHandler):
+class ROT13_0(webapp2.RequestHandler):
   def get(self):
-    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13" } )
+    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13 Rotation in every step" } )
   def post(self):
     text=self.request.get('text')
-    self.response.out.write(rot%{"text":escape_html( encrypt(text,0) ),"rotation":"13" } )
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,0) ),"rotation":"13 Rotation in every step" } )
 
-class ROT13FB(webapp2.RequestHandler):
+class ROT13_1(webapp2.RequestHandler):
   def get(self):
-    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13 forward backward" } )
+    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13 Rotation in 1 step(s)" } )
   def post(self):
     text=self.request.get('text')
-    self.response.out.write(rot%{"text":escape_html( encrypt(text,1) ),"rotation":"13 forward backward" } )
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,2) ),"rotation":"13 Rotation in 1 step(s)" } )
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),('/rot13',ROT13),('/rot13FB',ROT13FB)
+    ('/', MainHandler),('/rot13',ROT13_0),('/rot13_1',ROT13_1)
 ], debug=True)
 
