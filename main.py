@@ -109,6 +109,8 @@ class MainHandler(webapp2.RequestHandler):
       self.redirect('/rot13')
     elif(ROT=="1"):
       self.redirect('/rot13_1')
+    elif(ROT=="2"):
+      self.redirect('/rot13_2')
 #    else:
 
 #      self.response.out.write(front%{"error":"That page is under construction.Please try another option !"} )
@@ -127,7 +129,14 @@ class ROT13_1(webapp2.RequestHandler):
     text=self.request.get('text')
     self.response.out.write(rot%{"text":escape_html( encrypt(text,2) ),"rotation":"13 Rotation in 1 step(s)" } )
 
+class ROT13_2(webapp2.RequestHandler):
+  def get(self):
+    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13 Rotation in 2 step(s)" } )
+  def post(self):
+    text=self.request.get('text')
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,3) ),"rotation":"13 Rotation in 2 step(s)" } )
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),('/rot13',ROT13_0),('/rot13_1',ROT13_1)
+    ('/', MainHandler),('/rot13',ROT13_0),('/rot13_1',ROT13_1),('/rot13_2',ROT13_2)
 ], debug=True)
 
