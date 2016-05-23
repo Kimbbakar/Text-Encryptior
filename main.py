@@ -29,9 +29,9 @@ front="""
 
 <form method="post">
   <select name="ROT">
-    <option value="2">2 Rotation</option>
     <option value="13">13 Rotation</option>
-    <option value="15">15 Rotation</option>
+    <option value="13 forward backward">13 forward backward Rotation</option>
+    <option value="13 backward forward">13 forward backward Rotation</option>
   </select>
 
   <br>
@@ -78,12 +78,13 @@ rot="""
 
 """
 
-def encrypt(s,val):
+def encrypt(s,type):
   s=s.lower();
   s=list(s);
   for i in range(len(s)):
     if (s[i].isalpha()==True):
-      s[i]=chr( ( (ord(s[i])-97)+val)%26+97 );
+      if(type==0):
+        s[i]=chr( ( (ord(s[i])-97)+13+26)%26+97 );
 
   #x=chr(ord(s[0])-32);
   #s[0]=x;
@@ -106,26 +107,27 @@ class MainHandler(webapp2.RequestHandler):
 
     if(ROT=="13"):
       self.redirect('/rot13')
-    if(ROT=="2"):
-      self.redirect('/rot2')
-    else:
-      self.response.out.write(front%{"error":"That page is under construction.Please try another option !"} )
+    elif(ROT=="13 forward backward"):
+      self.redirect('/rot13FB')
+#    else:
+
+#      self.response.out.write(front%{"error":"That page is under construction.Please try another option !"} )
 
 class ROT13(webapp2.RequestHandler):
   def get(self):
     self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13" } )
   def post(self):
     text=self.request.get('text')
-    self.response.out.write(rot%{"text":escape_html( encrypt(text,13) ),"rotation":"13" } )
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,0) ),"rotation":"13" } )
 
-class ROT2(webapp2.RequestHandler):
+class ROT13FB(webapp2.RequestHandler):
   def get(self):
-    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"2" } )
+    self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13 forward backward" } )
   def post(self):
     text=self.request.get('text')
-    self.response.out.write(rot%{"text":escape_html( encrypt(text,2) ),"rotation":"2" } )
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,1) ),"rotation":"13 forward backward" } )
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),('/rot13',ROT13),('/rot2',ROT2)
+    ('/', MainHandler),('/rot13',ROT13),('/rot13FB',ROT13FB)
 ], debug=True)
 
