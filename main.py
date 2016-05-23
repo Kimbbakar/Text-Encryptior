@@ -82,7 +82,7 @@ def encrypt(s,st):
   s=s.lower();
   s=list(s);
   for i in range(len(s)):
-    if (s[i].isalpha()==True and (st==0 or (i%1)%st==0) ) :
+    if (s[i].isalpha()==True and (st==0 or (i+1)%st==0) ) :
         s[i]=chr( ( (ord(s[i])-97)+13+26)%26+97 );
 
 
