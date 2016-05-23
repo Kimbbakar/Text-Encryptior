@@ -118,7 +118,7 @@ class ROT13_0(webapp2.RequestHandler):
     self.response.out.write(rot%{"text":"Enter your text here...","rotation":"13 Rotation in every step" } )
   def post(self):
     text=self.request.get('text')
-    self.response.out.write(rot%{"text":escape_html( encrypt(text,0) ),"rotation":"13 Rotation in every step" } )
+    self.response.out.write(rot%{"text":escape_html( encrypt(text,1) ),"rotation":"13 Rotation in every step" } )
 
 class ROT13_1(webapp2.RequestHandler):
   def get(self):
